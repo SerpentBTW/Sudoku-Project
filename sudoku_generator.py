@@ -1,4 +1,4 @@
-import random, copy
+import random, copy, math
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -27,16 +27,13 @@ class SudokuGenerator:
     def __init__(self, removed_cells, row_length=9):
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0]]
-        self.box_length = 3
+        self.board = []
+        for i in range(row_length):
+            row = []
+            for j in range(row_length):
+                row.append(0)
+            self.board.append(row)
+        self.box_length = math.sqrt(row_length)
         pass
 
     '''
@@ -58,7 +55,7 @@ class SudokuGenerator:
     '''
 
     def print_board(self):
-        for i in range(9):
+        for i in range(self.row_length):
             print(self.board[i])
         pass
 
@@ -259,18 +256,13 @@ Return: list[list] (a 2D Python list to represent the board)
 '''
 
 
-def generate_sudoku():
-    sudoku = SudokuGenerator(30)
-    board = sudoku.get_board()
+def generate_sudoku(size, removed):
+    sudoku = SudokuGenerator(removed, size)
     sudoku.fill_values()
+    end = copy.deepcopy(sudoku.get_board())
     sudoku.remove_cells()
-    board = sudoku.get_board()
-    return board
+    begin = sudoku.get_board()
+    return begin
 
-
-sudoku = SudokuGenerator(30)
-sudoku.fill_diagonal()
-sudoku.fill_remaining(0, sudoku.box_length)
-end = copy.deepcopy(sudoku.get_board())
-sudoku.remove_cells()
-begin = sudoku.get_board()
+test = SudokuGenerator(30)
+test.print_board()
