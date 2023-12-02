@@ -1,4 +1,4 @@
-import random
+import random, copy
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -27,7 +27,15 @@ class SudokuGenerator:
     def __init__(self, removed_cells, row_length=9):
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = None
+        self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0]]
         self.box_length = 3
         pass
 
@@ -39,15 +47,6 @@ class SudokuGenerator:
     '''
 
     def get_board(self):
-        self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 0, 0, 0, 0, 0]]
         return self.board
 
     '''
@@ -238,7 +237,7 @@ class SudokuGenerator:
         while count < self.removed_cells:
             row = random.randint(0, 8)
             col = random.randint(0, 8)
-            if self.board[row][col] is not 0:
+            if self.board[row][col] != 0:
                 self.board[row][col] = 0
                 count += 1
 
@@ -270,8 +269,8 @@ def generate_sudoku():
 
 
 sudoku = SudokuGenerator(30)
-sudoku.get_board()
 sudoku.fill_diagonal()
 sudoku.fill_remaining(0, sudoku.box_length)
-sudoku.print_board()
+end = copy.deepcopy(sudoku.get_board())
 sudoku.remove_cells()
+begin = sudoku.get_board()
