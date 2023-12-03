@@ -93,8 +93,9 @@ class GameScreens:
    def __init__(self):
        pass
 
-
+#Change the parameter for removed_cells to match the button's choice
    def game_in_progress(self):
+       generate_sudoku(9, EASY)
        screen.fill(BG_COLOR)
        self.controller.draw_grid()
        self.controller.draw_numbers()
