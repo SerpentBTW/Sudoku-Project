@@ -95,7 +95,10 @@ class GameScreens:
 
 #Change the parameter for removed_cells to match the button's choice
    def game_in_progress(self):
-       generate_sudoku(9, EASY)
+       sudoku = SudokuGenerator(EASY, 9)
+       sudoku.fill_values()
+       sudoku.remove_cells()
+       sudoku.print_board()
        screen.fill(BG_COLOR)
        self.controller.draw_grid()
        self.controller.draw_numbers()
@@ -141,7 +144,7 @@ title_2_font = pygame.font.Font(None, TITLE_2_FONT)
 
 def main():
    # Start the game
-   game_screen.game_start()
+   game_screen.game_in_progress()
 
 
    while True:
