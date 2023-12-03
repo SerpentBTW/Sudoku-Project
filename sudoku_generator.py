@@ -25,15 +25,15 @@ class SudokuGenerator:
     '''
 
     def __init__(self, removed_cells, row_length=9):
-        self.row_length = row_length
+        self.row_length = 9
         self.removed_cells = removed_cells
         self.board = []
-        for i in range(row_length):
+        for i in range(self.row_length):
             row = []
-            for j in range(row_length):
+            for j in range(self.row_length):
                 row.append(0)
             self.board.append(row)
-        self.box_length = math.sqrt(row_length)
+        self.box_length = 3
         pass
 
     '''
@@ -57,7 +57,6 @@ class SudokuGenerator:
     def print_board(self):
         for i in range(self.row_length):
             print(self.board[i])
-        pass
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -71,8 +70,8 @@ class SudokuGenerator:
     '''
 
     def valid_in_row(self, row, num):
-        for i in range(9):
-            if num in self.board[row]:
+        for i in range(self.row_length):
+            if num == self.board[row][i]:
                 return False
         return True
 
@@ -88,7 +87,7 @@ class SudokuGenerator:
     '''
 
     def valid_in_col(self, col, num):
-        for i in range(9):
+        for i in range(self.row_length):
             if num == self.board[i][col]:
                 return False
 
@@ -106,14 +105,14 @@ class SudokuGenerator:
 
 	Return: boolean
     '''
+#Possibly Broken
 
     def valid_in_box(self, row_start, col_start, num):
-        for i in range(row_start, row_start + 3):
-            for j in range(col_start, col_start + 3):
+        for i in range(row_start, row_start + self.box_length):
+            for j in range(col_start, col_start + self.box_length):
                 if self.board[i][j] == num:
                     return False
         return True
-
     '''
     Determines if it is valid to enter num at (row, col) in the board
     This is done by checking that num is unused in the appropriate, row, column, and box
@@ -126,8 +125,10 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
-        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(row - row % 3,
-                                                                                             col - col % 3, num):
+        if self.valid_in_row(row, num) and self.valid_in_col(col, num) and self.valid_in_box(
+                row - row % self.box_length,
+                col - col % self.box_length,
+                num):
             return True
         else:
             return False
@@ -144,9 +145,9 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-        nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        for i in range(row_start, row_start + 3):
-            for j in range(col_start, col_start + 3):
+        nums = [n for n in range(1, self.row_length + 1)]
+        for i in range(row_start, row_start + self.box_length):
+            for j in range(col_start, col_start + self.box_length):
                 self.board[i][j] = nums.pop(random.randint(0, len(nums) - 1))
 
     '''
@@ -158,9 +159,8 @@ class SudokuGenerator:
     '''
 
     def fill_diagonal(self):
-        self.fill_box(0, 0)
-        self.fill_box(3, 3)
-        self.fill_box(6, 6)
+        for i in range(self.row_length // self.box_length):
+            self.fill_box(i * self.box_length, i * self.box_length)
         pass
 
     '''
@@ -232,8 +232,8 @@ class SudokuGenerator:
     def remove_cells(self):
         count = 0
         while count < self.removed_cells:
-            row = random.randint(0, 8)
-            col = random.randint(0, 8)
+            row = random.randint(0, self.row_length - 1)
+            col = random.randint(0, self.row_length - 1)
             if self.board[row][col] != 0:
                 self.board[row][col] = 0
                 count += 1
@@ -264,5 +264,3 @@ def generate_sudoku(size, removed):
     begin = sudoku.get_board()
     return begin
 
-test = SudokuGenerator(30)
-test.print_board()
