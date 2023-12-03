@@ -36,8 +36,18 @@ class GameController:
 
 
    #Draw functions
-   def draw_button(self, x_coordinate, y_coordinate):
-       pass
+   def draw_button(self, x, y, button_text):
+       BUTTON_FONT = pygame.font.Font('freesansbold.ttf', 50)
+       btn_text = BUTTON_FONT.render(button_text, 0, (255, 255, 255))
+       button_surface = pygame.Surface((btn_text.get_size()[0] + 20, btn_text.get_size()[1] + 20))
+       button_surface.fill(LINE_COLOR)
+       button_surface.blit(btn_text, (10, 10))
+
+       button_rectangle = button_surface.get_rect(
+           center=(x, y)
+       )
+
+       screen.blit(button_surface, button_rectangle)
 
 
    def draw_title(self, title, font):
