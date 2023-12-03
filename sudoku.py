@@ -2,6 +2,7 @@ from sudoku_generator import *
 import pygame
 import sys
 from constants import *
+from sudoku_generator import SudokuGenerator
 
 
 
@@ -94,6 +95,7 @@ class GameScreens:
 
 
    def game_in_progress(self):
+       screen.fill(BG_COLOR)
        self.controller.draw_grid()
        self.controller.draw_numbers()
 
