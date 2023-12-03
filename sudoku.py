@@ -9,13 +9,12 @@ from constants import *
 #Game over screen should have restart button
 
 
-class GameInProgress:
+class GameController:
    def __init__(self):
        pass
 
 
    def draw_grid(self):
-       #Drawing the sudoku board
        for i in range(1, 4):
            pygame.draw.line(
                screen,
@@ -45,22 +44,32 @@ class GameInProgress:
                    (i * CELL_SIZE, 0),
                    (i * CELL_SIZE, HEIGHT - 100)
                )
+       #Still need to draw buttons
 
 
-class GameScreen:
+class GameScreens:
+   controller = GameController()
    def __init__(self):
        pass
+
+
+   def game_in_progress(self):
+       self.controller.draw_grid()
 
 
 #initializing pygame and controller classes
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-controller = GameInProgress()
+game_screen = GameScreens()
 pygame.display.set_caption("Sudoku")
 
 
+#Fonts
+number_font = pygame.font.Font(None, CHIP_FONT)
+
+
 screen.fill(BG_COLOR)
-controller.draw_grid()
+game_screen.game_in_progress()
 
 
 while True:
@@ -69,3 +78,4 @@ while True:
            pygame.quit()
            sys.exit()
    pygame.display.update()
+
