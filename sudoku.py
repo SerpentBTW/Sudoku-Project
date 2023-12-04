@@ -7,45 +7,39 @@ from sudoku_generator import SudokuGenerator
 
 
 
-# We need to be able to control what screens are shown
-# Game start screen should have 3 buttoms, easy, medium, and hard
-# Game in progress screen should have the board and Reset, restart, and exit
-# Game won screen should have an exit button
-# Game over screen should have restart button
-
-
 class GameController:
    def __init__(self):
        pass
 
 
-   #Game functionality
-   def handle_button_click(self, click):
-       if click == 'easy':
-           pass
-       elif click == 'medium':
-           pass
-       elif click == 'hard':
-           pass
-       elif click == 'reset':
-           pass
-       elif click == 'restart':
-           pass
-       elif click == 'exit':
-           pass
+   # Game functionality
+   def handle_button_click(self, row, col, screen):
+       while True:
+           for event in pygame.event.get():
+               if event.type == pygame.MOUSEBUTTONDOWN:
+                   if screen == 'start':
+                       if row == 2:
+                           game_screen.game_in_progress()
+                           if col == 0:
+                               print("EASY")
+                           elif col == 1:
+                               print("MEDIUM")
+                           elif col == 2:
+                               print("HARD")
 
 
-   #Draw functions
+   # Draw functions
    def draw_button(self, x, y, button_text):
-       BUTTON_FONT = pygame.font.Font('freesansbold.ttf', 35)
-       btn_text = BUTTON_FONT.render(button_text, 0, (0, 0, 0))
+       btn_text = button_font.render(button_text, 0, (0, 0, 0))
        button_surface = pygame.Surface((btn_text.get_size()[0] + 20, btn_text.get_size()[1] + 20))
        button_surface.fill(BUTTON_COLOR)
        button_surface.blit(btn_text, (10, 10))
 
+
        button_rectangle = button_surface.get_rect(
            center=(x, y)
        )
+
 
        screen.blit(button_surface, button_rectangle)
 
@@ -103,7 +97,8 @@ class GameScreens:
    def __init__(self):
        pass
 
-#Change the parameter for removed_cells to match the button's choice
+
+   # Change the parameter for removed_cells to match the button's choice
    def game_in_progress(self):
        sudoku = SudokuGenerator(EASY, 9)
        sudoku.fill_values()
@@ -156,6 +151,7 @@ pygame.display.set_caption("Sudoku")
 number_font = pygame.font.Font(None, NUMBER_FONT)
 title_font = pygame.font.Font(None, TITLE_FONT)
 title_2_font = pygame.font.Font(None, TITLE_2_FONT)
+button_font = pygame.font.Font(None, BUTTON_FONT)
 
 
 
@@ -163,13 +159,55 @@ title_2_font = pygame.font.Font(None, TITLE_2_FONT)
 def main():
    # Start the game
    game_screen.game_start()
+   current_screen = "start"
 
 
    while True:
        for event in pygame.event.get():
+           # Listening for user events
            if event.type == pygame.QUIT:
                pygame.quit()
                sys.exit()
+           if event.type == pygame.MOUSEBUTTONDOWN:
+               x, y = event.pos
+               row = y // SQUARE_SIZE
+               col = x // SQUARE_SIZE
+               print(row, col)
+
+
+               # Use different coordinates depending on the screen shown
+               if current_screen == 'start':
+                   if row == 2:
+                       game_screen.game_in_progress()
+                       current_screen = 'in progress'
+                       # Should be removing cells based on what is printed
+                       if col == 0:
+                           print("EASY")
+                       elif col == 1:
+                           print("MEDIUM")
+                       elif col == 2:
+                           print("HARD")
+
+
+               if current_screen == 'in progress':
+                   if row == 3:
+                       if col == 0:
+                           pass
+                           # This should reset the board to its initial state
+                       elif col == 1:
+                           game_screen.game_start()
+                           current_screen = 'start'
+                       elif col == 2:
+                           pygame.quit()
+                           sys.exit()
+
+
+               if current_screen == 'game over':
+                   if row == 1 and col == 1:
+                       game_screen.game_start()
+                       current_screen = 'start'
+
+
        pygame.display.update()
 
 
@@ -177,3 +215,4 @@ def main():
 
 if __name__ == "__main__":
    main()
+
