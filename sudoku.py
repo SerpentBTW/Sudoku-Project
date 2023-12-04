@@ -37,10 +37,10 @@ class GameController:
 
    #Draw functions
    def draw_button(self, x, y, button_text):
-       BUTTON_FONT = pygame.font.Font('freesansbold.ttf', 50)
-       btn_text = BUTTON_FONT.render(button_text, 0, (255, 255, 255))
+       BUTTON_FONT = pygame.font.Font('freesansbold.ttf', 35)
+       btn_text = BUTTON_FONT.render(button_text, 0, (0, 0, 0))
        button_surface = pygame.Surface((btn_text.get_size()[0] + 20, btn_text.get_size()[1] + 20))
-       button_surface.fill(LINE_COLOR)
+       button_surface.fill(BUTTON_COLOR)
        button_surface.blit(btn_text, (10, 10))
 
        button_rectangle = button_surface.get_rect(
@@ -112,6 +112,9 @@ class GameScreens:
        screen.fill(BG_COLOR)
        self.controller.draw_grid()
        self.controller.draw_numbers()
+       self.controller.draw_button(100, 725, "Reset")
+       self.controller.draw_button(335, 725, "Restart")
+       self.controller.draw_button(575, 725, "Exit")
 
 
    # Game start screen
@@ -121,18 +124,23 @@ class GameScreens:
        title_surface = title_2_font.render("Select Game Mode:", 0, LINE_COLOR)
        title_rectangle = title_surface.get_rect(center=(WIDTH // 2, WIDTH // 2))
        screen.blit(title_surface, title_rectangle)
+       self.controller.draw_button(100, 500, "Easy")
+       self.controller.draw_button(335, 500, "Medium")
+       self.controller.draw_button(570, 500, "Hard")
 
 
    # Game Won!
    def game_won(self):
        screen.fill(BG_COLOR)
        self.controller.draw_title("Game Won!", title_font)
+       self.controller.draw_button(335, 350, "  Exit  ")
 
 
    # Game Over!
    def game_over(self):
        screen.fill(BG_COLOR)
        self.controller.draw_title("Game Over :(", title_font)
+       self.controller.draw_button(335, 350, "Restart")
 
 
 
