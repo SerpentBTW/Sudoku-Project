@@ -137,7 +137,7 @@ class GameScreens:
 
 
 
-# initializing pygame, controller class, and the board
+# initializing pygame, controller class, and screens
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 game_screen = GameScreens()
@@ -154,7 +154,7 @@ title_2_font = pygame.font.Font(None, TITLE_2_FONT)
 
 def main():
    # Start the game
-   game_screen.game_in_progress()
+   game_screen.game_start()
 
 
    while True:
