@@ -2,7 +2,6 @@ from sudoku_generator import *
 import pygame
 import sys
 from constants import *
-from sudoku_generator import SudokuGenerator
 
 
 
@@ -10,25 +9,16 @@ from sudoku_generator import SudokuGenerator
 class GameController:
    def __init__(self):
        pass
+   # Draw/create functions
 
 
-   # Game functionality
-   def handle_button_click(self, row, col, screen):
-       while True:
-           for event in pygame.event.get():
-               if event.type == pygame.MOUSEBUTTONDOWN:
-                   if screen == 'start':
-                       if row == 2:
-                           game_screen.game_in_progress()
-                           if col == 0:
-                               print("EASY")
-                           elif col == 1:
-                               print("MEDIUM")
-                           elif col == 2:
-                               print("HARD")
+   def create_board(self, difficulty):
+       sudoku = SudokuGenerator(difficulty, 9)
+       sudoku.fill_values()
+       sudoku.remove_cells()
+       return sudoku
 
 
-   # Draw functions
    def draw_button(self, x, y, button_text):
        btn_text = button_font.render(button_text, 0, (0, 0, 0))
        button_surface = pygame.Surface((btn_text.get_size()[0] + 20, btn_text.get_size()[1] + 20))
@@ -50,10 +40,17 @@ class GameController:
        screen.blit(title_surface, title_rectangle)
 
 
-   def draw_numbers(self):
-       number_surface = number_font.render('1', 0, LINE_COLOR)
-       number_rectangle = number_surface.get_rect(center=(WIDTH / 2, WIDTH / 2))
-       screen.blit(number_surface, number_rectangle)
+   def draw_numbers(self, board):
+       # Go through each number in the board, and add it if isn't 0
+       for row in range(BOARD_ROWS):
+           for col in range(BOARD_COLS):
+               if board[row][col] != 0:
+                   number_surface = number_font.render(str(board[row][col]), 0, LINE_COLOR)
+                   number_rectangle = number_surface.get_rect(
+                       center=(col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2))
+                   screen.blit(number_surface, number_rectangle)
+
+
 
 
    def draw_grid(self):
@@ -99,14 +96,12 @@ class GameScreens:
 
 
    # Change the parameter for removed_cells to match the button's choice
-   def game_in_progress(self):
-       sudoku = SudokuGenerator(EASY, 9)
-       sudoku.fill_values()
-       sudoku.remove_cells()
-       sudoku.print_board()
+   def game_in_progress(self, difficulty):
+       # Every time this function is called, a new board should be made
+       board = self.controller.create_board(difficulty)
        screen.fill(BG_COLOR)
        self.controller.draw_grid()
-       self.controller.draw_numbers()
+       self.controller.draw_numbers(board.board)
        self.controller.draw_button(100, 725, "Reset")
        self.controller.draw_button(335, 725, "Restart")
        self.controller.draw_button(575, 725, "Exit")
@@ -172,21 +167,22 @@ def main():
                x, y = event.pos
                row = y // SQUARE_SIZE
                col = x // SQUARE_SIZE
-               print(row, col)
+               row_cell = y // CELL_SIZE
+               col_cell = x // CELL_SIZE
 
 
                # Use different coordinates depending on the screen shown
                if current_screen == 'start':
                    if row == 2:
-                       game_screen.game_in_progress()
-                       current_screen = 'in progress'
-                       # Should be removing cells based on what is printed
+                       # Set difficulty and change the screen accordingly
                        if col == 0:
-                           print("EASY")
+                           difficulty = EASY
                        elif col == 1:
-                           print("MEDIUM")
+                           difficulty = MEDIUM
                        elif col == 2:
-                           print("HARD")
+                           difficulty = HARD
+                       game_screen.game_in_progress(difficulty)
+                       current_screen = 'in progress'
 
 
                if current_screen == 'in progress':
