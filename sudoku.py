@@ -15,7 +15,8 @@ class GameController:
         sudoku.fill_values()
         end = copy.deepcopy(sudoku.get_board())
         sudoku.remove_cells()
-        return sudoku, end
+        begin = copy.deepcopy(sudoku.get_board())
+        return sudoku, end, begin
 
     def draw_button(self, x, y, button_text):
         btn_text = button_font.render(button_text, 0, (0, 0, 0))
@@ -85,14 +86,14 @@ class GameScreens:
     # Change the parameter for removed_cells to match the button's choice
     def game_in_progress(self, difficulty):
         # Every time this function is called, a new board should be made
-        board, end = self.controller.create_board(difficulty)
+        board, end, begin = self.controller.create_board(difficulty)
         screen.fill(BG_COLOR)
         self.controller.draw_grid()
         self.controller.draw_numbers(board.board)
         self.controller.draw_button(100, 725, "Reset")
         self.controller.draw_button(335, 725, "Restart")
         self.controller.draw_button(575, 725, "Exit")
-        return board, end
+        return board, end, begin
 
     # Game start screen
     def game_start(self):
@@ -159,7 +160,7 @@ def main():
                             difficulty = MEDIUM
                         elif col == 2:
                             difficulty = HARD
-                        board, end = game_screen.game_in_progress(difficulty)
+                        board, end, begin = game_screen.game_in_progress(difficulty)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
@@ -199,10 +200,11 @@ def main():
                             numInput = 8
                         case (pygame.K_9):
                             numInput = 9
-                    if board.is_valid(row_cell, col_cell, numInput) and numInput == end[row_cell][col_cell]:
-                        board.board[row_cell][col_cell] = numInput
-                    print(end)
-                    print(board.get_board())
+                    if event.key == pygame.K_RETURN:
+                        if begin[row_cell][col_cell] == 0:
+                            board.board[row_cell][col_cell] = numInput
+                            print(end[0])
+                            print(board.board[0])
 
         pygame.display.update()
 
