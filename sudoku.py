@@ -169,7 +169,7 @@ def main():
                     print(row_cell, col_cell, row, col)
                 if current_screen == "in progress":
                     if row == 0 or row == 1 or row == 2:
-                        if not selected:
+                        if not selected and begin[row_cell][col_cell] == 0:
                             pygame.draw.rect(screen, (255, 0, 0), (col_cell * 75, row_cell * 75, CELL_SIZE, CELL_SIZE), 3)
                             selected = True
                         elif selected:
