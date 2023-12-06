@@ -200,10 +200,13 @@ def main():
                             numInput = 8
                         case (pygame.K_9):
                             numInput = 9
+                    number_surface = number_font.render(str(numInput), 0, LINE_COLOR)
+                    number_rectangle = number_surface.get_rect(
+                        center=(col_cell * CELL_SIZE + CELL_SIZE // 2, row_cell * CELL_SIZE + CELL_SIZE // 2))
+                    screen.blit(number_surface, number_rectangle)
                     if event.key == pygame.K_RETURN:
                         if begin[row_cell][col_cell] == 0:
                             board.board[row_cell][col_cell] = numInput
-
         pygame.display.update()
 
 
