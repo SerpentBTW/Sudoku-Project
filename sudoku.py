@@ -196,9 +196,11 @@ def main():
                             game_screen.controller.draw_button(100, 725, "Reset")
                             game_screen.controller.draw_button(335, 725, "Restart")
                             game_screen.controller.draw_button(575, 725, "Exit")
+                            selected = False
                             continue
                         # "Restart" Function will bring user back to main menu
                         elif col == 1:
+                            selected = False
                             game_screen.game_start()
                             current_screen = 'start'
                         # Quits Game
