@@ -166,12 +166,14 @@ def main():
                     col = x // SQUARE_SIZE
                     row_cell = y // CELL_SIZE
                     col_cell = x // CELL_SIZE
+                    print(row_cell, col_cell, row, col)
                 if current_screen == "in progress":
-                    if not selected:
-                        pygame.draw.rect(screen, (255, 0, 0), (col_cell * 75, row_cell * 75, CELL_SIZE, CELL_SIZE), 3)
-                        selected = True
-                    elif selected:
-                        continue
+                    if row == 0 or row == 1 or row == 2:
+                        if not selected:
+                            pygame.draw.rect(screen, (255, 0, 0), (col_cell * 75, row_cell * 75, CELL_SIZE, CELL_SIZE), 3)
+                            selected = True
+                        elif selected:
+                            continue
                 # Use different coordinates depending on the screen shown
                 if current_screen == 'start':
                     if row == 2:
