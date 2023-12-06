@@ -166,7 +166,6 @@ def main():
                     col = x // SQUARE_SIZE
                     row_cell = y // CELL_SIZE
                     col_cell = x // CELL_SIZE
-                    print(row_cell, col_cell, row, col)
                 if current_screen == "in progress":
                     if row == 0 or row == 1 or row == 2:
                         if not selected and begin[row_cell][col_cell] == 0:
