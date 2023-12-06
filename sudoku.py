@@ -168,7 +168,6 @@ def main():
                     if row == 3:
                         if col == 0:
                             board.board = copy.deepcopy(begin)
-                            print(board.board)
                             screen.fill(BG_COLOR)
                             game_screen.controller.draw_grid()
                             game_screen.controller.draw_numbers(begin)
