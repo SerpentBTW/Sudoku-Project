@@ -255,21 +255,24 @@ def main():
                                 board.board[row_cell][col_cell] = numInput
                                 numInput = 0
 
-                                # Finished Condition
+                                # Check if there are empty spaces
                                 finished = True
                                 for i in board.board:
                                     if 0 in i:
                                         finished = False
                                         break
-
+                                # if no empty spaces, then check if everything matches to the solution
                                 if finished:
                                     for i in range(9):
-                                        if end[i] == board.board[i]:
-                                            game_screen.game_won()
-                                            current_screen = "game won"
-                                        else:
+                                        # If there is a discrepancy, then it will show you lose
+                                        if end[i] != board.board[i]:
                                             game_screen.game_over()
                                             current_screen = "game over"
+                                    # if no discrepancy then you win
+                                    else:
+                                        game_screen.game_won()
+                                        current_screen = 'game won'
+
                                 continue
                     # If the starting board at said row,cell was given or the current board has a number in place
                     if begin[row_cell][col_cell] != 0 or board.board[row_cell][col_cell] != 0:
