@@ -45,6 +45,17 @@ class GameController:
                         center=(col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2))
                     screen.blit(number_surface, number_rectangle)
 
+    def establish_numbers(self, board):
+        numbers_can_not_change = []
+        numbers_can_change = []
+        for row in range(BOARD_ROWS):
+            for col in range(BOARD_COLS):
+                if board[row][col] != 0:
+                    numbers_can_not_change.append((row, col))
+                else:
+                    numbers_can_change.append((row, col))
+        return numbers_can_not_change, numbers_can_change
+
     def draw_grid(self):
         for i in range(1, 4):
             pygame.draw.line(
@@ -90,10 +101,11 @@ class GameScreens:
         screen.fill(BG_COLOR)
         self.controller.draw_grid()
         self.controller.draw_numbers(board.board)
+        can_not_change, can_change = self.controller.establish_numbers(board.board)
         self.controller.draw_button(100, 725, "Reset")
         self.controller.draw_button(335, 725, "Restart")
         self.controller.draw_button(575, 725, "Exit")
-        return board, end, begin
+        return board, end, begin, can_not_change, can_change
 
     # Game start screen
     def game_start(self):
@@ -161,7 +173,7 @@ def main():
                             difficulty = MEDIUM
                         elif col == 2:
                             difficulty = HARD
-                        board, end, begin = game_screen.game_in_progress(difficulty)
+                        board, end, begin, can_not_change, can_change = game_screen.game_in_progress(difficulty)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
@@ -188,34 +200,58 @@ def main():
                         current_screen = 'start'
             if event.type == pygame.KEYDOWN:
                 if current_screen == 'in progress':
+                    num_input = None
                     match event.key:
                         case (pygame.K_1):
-                            numInput = 1
+                            num_input = 1
                         case (pygame.K_2):
-                            numInput = 2
+                            num_input = 2
                         case (pygame.K_3):
-                            numInput = 3
+                            num_input = 3
                         case (pygame.K_4):
-                            numInput = 4
+                            num_input = 4
                         case (pygame.K_5):
-                            numInput = 5
+                            num_input = 5
                         case (pygame.K_6):
-                            numInput = 6
+                            num_input = 6
                         case (pygame.K_7):
-                            numInput = 7
+                            num_input = 7
                         case (pygame.K_8):
-                            numInput = 8
+                            num_input = 8
                         case (pygame.K_9):
-                            numInput = 9
-                        case (pygame.K_0):
-                            continue
-                    number_surface = number_font.render(str(numInput), 0, LINE_COLOR)
-                    number_rectangle = number_surface.get_rect(
-                        center=(col_cell * CELL_SIZE + CELL_SIZE // 2, row_cell * CELL_SIZE + CELL_SIZE // 2))
-                    screen.blit(number_surface, number_rectangle)
-                    if event.key == pygame.K_RETURN:
-                        if begin[row_cell][col_cell] == 0:
-                            board.board[row_cell][col_cell] = numInput
+                            num_input = 9
+                    if num_input is not None:
+                        #Now we need to check if the cell was randomly generated when clicked on
+                        can_edit = True
+                        for coordinate in can_not_change:
+                            if coordinate[0] == row_cell and coordinate[1] == col_cell:
+                                can_edit = False
+                                break
+                            else:
+                                can_edit = True
+                        #These are the empty cells in the board, they should allow backspaces
+                        for coordinate in can_change:
+                            if board.board[coordinate[0]][coordinate[1]] != 0:
+                                pass
+
+
+                        #For now numbers that are added can't be edited
+                        if board.board[row_cell][col_cell] != 0:
+                            can_edit = False
+                        else:
+                            can_edit = True
+
+
+                        if can_edit == True:
+                            number_surface = number_font.render(str(num_input), 0, LINE_COLOR)
+                            number_rectangle = number_surface.get_rect(
+                                center=(col_cell * CELL_SIZE + CELL_SIZE // 2, row_cell * CELL_SIZE + CELL_SIZE // 2))
+                            screen.blit(number_surface, number_rectangle)
+                            # Editing the board as well
+                            board.board[row_cell][col_cell] = num_input
+                            if event.key == pygame.K_RETURN:
+                                if begin[row_cell][col_cell] == 0:
+                                    board.board[row_cell][col_cell] = num_input
         pygame.display.update()
 
 
