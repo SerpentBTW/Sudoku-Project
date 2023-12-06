@@ -150,6 +150,7 @@ def main():
     game_screen.game_start()
     current_screen = "start"
     numInput = 0
+    selected = False
     # Main Loop for different actions
     while True:
         for event in pygame.event.get():
@@ -159,11 +160,18 @@ def main():
                 sys.exit()
             # Gets location of mouse button and which cell is being clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                row = y // SQUARE_SIZE
-                col = x // SQUARE_SIZE
-                row_cell = y // CELL_SIZE
-                col_cell = x // CELL_SIZE
+                if not selected:
+                    x, y = event.pos
+                    row = y // SQUARE_SIZE
+                    col = x // SQUARE_SIZE
+                    row_cell = y // CELL_SIZE
+                    col_cell = x // CELL_SIZE
+                if current_screen == "in progress":
+                    if not selected:
+                        pygame.draw.rect(screen, (255, 0, 0), (col_cell * 75, row_cell * 75, CELL_SIZE, CELL_SIZE), 3)
+                        selected = True
+                    elif selected:
+                        continue
                 # Use different coordinates depending on the screen shown
                 if current_screen == 'start':
                     if row == 2:
@@ -175,7 +183,6 @@ def main():
                         elif col == 2:
                             difficulty = HARD
                         board, end, begin, can_not_change, can_change = game_screen.game_in_progress(difficulty)
-                        print(end)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
@@ -240,22 +247,30 @@ def main():
                                 continue
                             # Else the backspace will delete the user's input at said row,col and  will redraw
                             # accordingly
-                            board.board[row_cell][col_cell] = 0
-                            screen.fill(BG_COLOR)
-                            game_screen.controller.draw_grid()
-                            game_screen.controller.draw_numbers(board.board)
-                            game_screen.controller.draw_button(100, 725, "Reset")
-                            game_screen.controller.draw_button(335, 725, "Restart")
-                            game_screen.controller.draw_button(575, 725, "Exit")
-                            numInput = 0
-                            continue
+                            if selected:
+                                board.board[row_cell][col_cell] = 0
+                                screen.fill(BG_COLOR)
+                                game_screen.controller.draw_grid()
+                                game_screen.controller.draw_numbers(board.board)
+                                game_screen.controller.draw_button(100, 725, "Reset")
+                                game_screen.controller.draw_button(335, 725, "Restart")
+                                game_screen.controller.draw_button(575, 725, "Exit")
+                                numInput = 0
+                                selected = False
+                                continue
                         case (pygame.K_RETURN):
                             # If the cell is editable and the current board doesn't have a number in there already
                             if begin[row_cell][col_cell] == 0 and board.board[row_cell][col_cell] == 0:
                                 # The board will confirm the input
                                 board.board[row_cell][col_cell] = numInput
                                 numInput = 0
-                                print(board.print_board())
+                                screen.fill(BG_COLOR)
+                                game_screen.controller.draw_grid()
+                                game_screen.controller.draw_numbers(board.board)
+                                game_screen.controller.draw_button(100, 725, "Reset")
+                                game_screen.controller.draw_button(335, 725, "Restart")
+                                game_screen.controller.draw_button(575, 725, "Exit")
+                                selected = False
 
                                 # Check if there are empty spaces
                                 finished = True
