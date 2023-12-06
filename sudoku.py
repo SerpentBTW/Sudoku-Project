@@ -137,6 +137,7 @@ def main():
     game_screen.game_start()
     current_screen = "start"
 
+
     while True:
         for event in pygame.event.get():
             # Listening for user events
@@ -166,8 +167,15 @@ def main():
                 if current_screen == 'in progress':
                     if row == 3:
                         if col == 0:
-                            pass
-                            # This should reset the board to its initial state
+                            board.board = copy.deepcopy(begin)
+                            print(board.board)
+                            screen.fill(BG_COLOR)
+                            game_screen.controller.draw_grid()
+                            game_screen.controller.draw_numbers(begin)
+                            game_screen.controller.draw_button(100, 725, "Reset")
+                            game_screen.controller.draw_button(335, 725, "Restart")
+                            game_screen.controller.draw_button(575, 725, "Exit")
+                            continue
                         elif col == 1:
                             game_screen.game_start()
                             current_screen = 'start'
