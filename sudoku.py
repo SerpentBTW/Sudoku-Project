@@ -149,6 +149,7 @@ def main():
     # Start the game
     game_screen.game_start()
     current_screen = "start"
+    numInput = 0
     # Main Loop for different actions
     while True:
         for event in pygame.event.get():
@@ -163,7 +164,6 @@ def main():
                 col = x // SQUARE_SIZE
                 row_cell = y // CELL_SIZE
                 col_cell = x // CELL_SIZE
-                numInput = 0
                 # Use different coordinates depending on the screen shown
                 if current_screen == 'start':
                     if row == 2:
@@ -175,6 +175,7 @@ def main():
                         elif col == 2:
                             difficulty = HARD
                         board, end, begin, can_not_change, can_change = game_screen.game_in_progress(difficulty)
+                        print(end)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
@@ -254,6 +255,7 @@ def main():
                                 # The board will confirm the input
                                 board.board[row_cell][col_cell] = numInput
                                 numInput = 0
+                                print(board.print_board())
 
                                 # Check if there are empty spaces
                                 finished = True
@@ -265,11 +267,13 @@ def main():
                                 if finished:
                                     for i in range(9):
                                         # If there is a discrepancy, then it will show you lose
-                                        if end[i] != board.board[i]:
-                                            game_screen.game_over()
-                                            current_screen = "game over"
+                                        for j in range(9):
+                                            if end[i][j] != board.board[i][j]:
+                                                game_screen.game_over()
+                                                current_screen = "game over"
+                                                continue
                                     # if no discrepancy then you win
-                                    else:
+                                    if current_screen != "game over":
                                         game_screen.game_won()
                                         current_screen = 'game won'
 
