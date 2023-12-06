@@ -203,8 +203,6 @@ def main():
                     if event.key == pygame.K_RETURN:
                         if begin[row_cell][col_cell] == 0:
                             board.board[row_cell][col_cell] = numInput
-                            print(end[0])
-                            print(board.board[0])
 
         pygame.display.update()
 
