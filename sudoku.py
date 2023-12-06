@@ -200,6 +200,8 @@ def main():
                             numInput = 8
                         case (pygame.K_9):
                             numInput = 9
+                        case (pygame.K_0):
+                            continue
                     number_surface = number_font.render(str(numInput), 0, LINE_COLOR)
                     number_rectangle = number_surface.get_rect(
                         center=(col_cell * CELL_SIZE + CELL_SIZE // 2, row_cell * CELL_SIZE + CELL_SIZE // 2))
