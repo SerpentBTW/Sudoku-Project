@@ -1,3 +1,15 @@
+"""
+ASSUMPTIONS:
+    When in game:
+        Click The Cell
+        Then Insert a Number
+        Finally Press Enter to confirm
+        Cannot backout of cell when already selected:
+            Must enter number then select cell again to delete
+"""
+
+
+# Import Modules
 from sudoku_generator import *
 import pygame
 import sys
@@ -94,7 +106,7 @@ class GameScreens:
     def __init__(self):
         pass
 
-    # Change the parameter for removed_cells to match the button's choice
+    #Function Makes a New Board Page
     def game_in_progress(self, difficulty):
         # Every time this function is called, a new board should be made
         board, end, begin = self.controller.create_board(difficulty)
