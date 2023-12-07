@@ -18,8 +18,8 @@ from constants import *
 
 
 class GameController:
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
 
     # Draw/create functions
 
@@ -198,7 +198,6 @@ def main():
                         elif col == 2:
                             difficulty = HARD
                         board, end, begin, can_not_change, can_change = game_screen.game_in_progress(difficulty)
-                        print(end)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
