@@ -6,6 +6,7 @@ ASSUMPTIONS:
         Finally Press Enter to confirm
         Cannot backout of cell when already selected:
             Must enter number then select cell again to delete
+        If you click a wrong cell press enter first then click the right cell
 """
 
 
@@ -197,6 +198,7 @@ def main():
                         elif col == 2:
                             difficulty = HARD
                         board, end, begin, can_not_change, can_change = game_screen.game_in_progress(difficulty)
+                        print(end)
                         current_screen = 'in progress'
 
                 if current_screen == 'in progress':
