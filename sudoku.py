@@ -234,7 +234,6 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if current_screen == 'in progress':
                     if numInput == 0:
-                        print("3")
                         match event.key:
                             case (pygame.K_1):
                                 numInput = 1
@@ -279,7 +278,6 @@ def main():
                             # If the cell is editable and the current board doesn't have a number in there already
                             if begin[row_cell][col_cell] == 0 and board.board[row_cell][col_cell] == 0:
                                 # The board will confirm the input
-                                print(numInput)
                                 board.board[row_cell][col_cell] = numInput
                                 numInput = 0
                                 screen.fill(BG_COLOR)
