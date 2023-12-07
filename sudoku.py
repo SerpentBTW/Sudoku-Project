@@ -185,6 +185,7 @@ def main():
                             selected = True
                         elif selected:
                             continue
+
                 # Use different coordinates depending on the screen shown
                 if current_screen == 'start':
                     if row == 2:
@@ -226,13 +227,14 @@ def main():
                         game_screen.game_start()
                         current_screen = 'start'
                 if current_screen == 'game won':
-                    if row == 0 and col == 0:
+                    if row == 1 and col == 1:
                         pygame.quit()
                         sys.exit()
             # Detects a KeyDown action and get a number based on which key is pressed
             if event.type == pygame.KEYDOWN:
                 if current_screen == 'in progress':
                     if numInput == 0:
+                        print("3")
                         match event.key:
                             case (pygame.K_1):
                                 numInput = 1
@@ -277,6 +279,7 @@ def main():
                             # If the cell is editable and the current board doesn't have a number in there already
                             if begin[row_cell][col_cell] == 0 and board.board[row_cell][col_cell] == 0:
                                 # The board will confirm the input
+                                print(numInput)
                                 board.board[row_cell][col_cell] = numInput
                                 numInput = 0
                                 screen.fill(BG_COLOR)
@@ -308,6 +311,7 @@ def main():
                                         current_screen = 'game won'
 
                                 continue
+                            continue
                     # If the starting board at said row,cell was given or the current board has a number in place
                     if begin[row_cell][col_cell] != 0 or board.board[row_cell][col_cell] != 0:
                         continue
